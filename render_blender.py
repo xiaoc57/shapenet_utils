@@ -63,7 +63,7 @@ argv = sys.argv[sys.argv.index("--") + 1 :]
 args = parser.parse_args(argv)
 
 
-print("start rendering")
+# print("start rendering")
 
 
 def listify_matrix(matrix):
@@ -265,13 +265,13 @@ bpy.context.scene.cycles.device = 'GPU'
 bpy.ops.wm.save_userpref()
 
 # 调试输出
-print("\n=== 最终配置验证 ===")
-print(f"Compute Device Type: {cycles_preferences.compute_device_type}")
-print(f"Active Devices:")
-for device in cycles_preferences.devices:
-    if device.use:
-        print(f"  - {device.name} (Type: {device.type})")
-print(f"Scene Device: {bpy.context.scene.cycles.device}")
+# print("\n=== 最终配置验证 ===")
+# print(f"Compute Device Type: {cycles_preferences.compute_device_type}")
+# print(f"Active Devices:")
+# for device in cycles_preferences.devices:
+#     if device.use:
+#         print(f"  - {device.name} (Type: {device.type})")
+# print(f"Scene Device: {bpy.context.scene.cycles.device}")
 
 
 # Data to store in JSON file

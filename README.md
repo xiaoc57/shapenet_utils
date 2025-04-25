@@ -1,6 +1,6 @@
 python3 render_shapenet.py --start_idx=0 --end_idx=1 --model_root_dir=./ShapeNet --render_root_dir=./ShapeNet_render --blender_location=../blender_install/blender-3.6.13-linux-x64/blender --shapenetversion=v2
 
-python3 render_shapenet.py --start_idx=0 --end_idx=1 --model_root_dir=./ShapeNetCore.v1 --render_root_dir=./ShapeNetv1_render --blender_location=../blender_install/blender-3.6.13-linux-x64/blender --shapenetversion=v1
+python3 render_shapenet.py --start_idx=0 --end_idx=1 --model_root_dir=/home/public/IRL/shapenetv1 --render_root_dir=/home/public/IRL/shapenetv1_render --blender_location=/home/jiangyun/documents/Sp2Sl/ShapeSplat-Gaussian_MAE/blender_install/blender-3.6.13-linux-x64/blender --shapenetversion=v1 --num_thread=4 
 
 ../blender_install/blender-3.6.13-linux-x64/blender --background --python render_blender.py -- --views 72 --obj_save_dir ./ShapeNetv1_render /home/jiangyun/documents/Sp2Sl/ShapeSplat-Gaussian_MAE/render_scripts/ShapeNetCore.v1/02691156/1a04e3eab45ca15dd86060f189eb133/model.obj
 
@@ -10,9 +10,9 @@ In this part we show how to render CAD model to images and corresponding poses f
 ## Installation
 We use blender to render CAD model to images. Following blender install [instruction](https://www.blender.org/download/lts/3-6/), we use blender 3.6.13. You can install by
 ```sh
+mkdir render_logs
 mkdir ./blender_install && cd ./blender_install # or change to your prefer location
 wget https://mirror.freedif.org/blender/release/Blender3.6/blender-3.6.13-linux-x64.tar.xz
-
 tar -xvf blender-3.6.13-linux-x64.tar.xz
 ```
 After unpacking Blender, we can use it for rendering through the Python interface.
@@ -23,7 +23,6 @@ we need package **trimesh** and **PIL** for processing
 pip install trimesh
 pip install Pillow
 ```
-
 
 ## Datasets
 Prepare the CAD Dataset for usage. Get the ShapeNet from [ShapeNet website](https://shapenet.org/). Place the installed ShapeNet to **./ShapeNet**. We support both ShapeNetv1 and ShapeNetv2 rendering.

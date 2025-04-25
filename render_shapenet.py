@@ -4,6 +4,7 @@ import argparse
 import trimesh
 import json
 import zipfile
+from multiprocessing import Pool
 
 parser = argparse.ArgumentParser()
 parser.add_argument("--model_root_dir", type=str, default="./shapenet/ShapeNetCore.v1")
@@ -41,7 +42,7 @@ def gen_obj(model_root_dir, cat_id, obj_id):
     obj_save_dir = os.path.join(render_root_dir, cat_id+ "-"+ obj_id)
     os.makedirs(obj_save_dir, exist_ok=True)
 
-    # "There is no item named '000.png' in the archive” error
+    # "There is no item named '000.png' in the archive" error
     run_flag = True
     # check generated image.zip image number
     if os.path.exists(os.path.join(obj_save_dir, "image.zip")):
@@ -64,6 +65,13 @@ def gen_obj(model_root_dir, cat_id, obj_id):
 
     elif not os.path.exists(objpath):
         print("Non-Exist object model!!!, skip %s %s" % (cat_id, obj_id))
+        run_flag = False
+    
+    # 如果已经渲染完成，应该结束渲染，通过判断目标文件夹下有没有
+    # with open(obj_save_dir + "/" + "transforms_train.json", "w") as out_file:
+    #     json.dump(out_data, out_file, indent=4)
+    elif os.path.exists(os.path.join(obj_save_dir, "transforms_train.json")):
+        print("render OK!!")
         run_flag = False
 
     if run_flag:
@@ -122,5 +130,13 @@ obj_id_lst = obj_id_lst[FLAGS.start_idx : FLAGS.end_idx]
 
 print("sub_scenes_list", len(model_root_dir_lst))
 
-for model_root_dir, cat_id, obj_id in zip(model_root_dir_lst, cat_id_lst, obj_id_lst):
-    gen_obj(model_root_dir, cat_id, obj_id)
+# 创建进程池
+pool = Pool(processes=FLAGS.num_thread)
+
+# 使用starmap来并行处理任务
+tasks = list(zip(model_root_dir_lst, cat_id_lst, obj_id_lst))
+pool.starmap(gen_obj, tasks)
+
+# 关闭进程池
+pool.close()
+pool.join()
